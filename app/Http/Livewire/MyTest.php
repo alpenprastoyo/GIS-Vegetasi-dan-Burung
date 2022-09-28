@@ -38,6 +38,7 @@ class MyTest extends Component
                     'iconSize' => [50,50],
                     'locationId' => $location->id,
                     'title' => $location->title,
+                    // 'image' => $location->image,
                     'image' => $location->image,
                     'description' => $location->description
                 ]
@@ -78,11 +79,7 @@ class MyTest extends Component
 
         $imageName = md5($this->image.microtime()).'.'.$this->image->extension();
 
-        Storage::putFileAs(
-            'public/images',
-            $this->image,
-            $imageName
-        );
+        $this->image->storeAs('image/object',$imageName,'public' );
 
         Marker::create([
             'long' => $this->long,
