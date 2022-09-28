@@ -12,11 +12,11 @@ use App\Models\Marker;
 class MyTest extends Component
 {
     use WithFileUploads;
-    
-    public $count = 5; 
-    public $locationId,$long,$lat,$title,$description,$image; 
-    public $imageUrl; 
-    public $geoJson; 
+
+    public $count = 5;
+    public $locationId,$long,$lat,$title,$description,$image;
+    public $imageUrl;
+    public $geoJson;
     public $isEdit = false;
 
     private function getLocations() {
@@ -47,12 +47,12 @@ class MyTest extends Component
         $geoLocations = [
             'type' => 'FeatureCollection',
             'features' => $customLocation
-        ];  
-        
+        ];
+
         $geoJson = collect($geoLocations)->toJson();
         $this->geoJson = $geoJson;
     }
-   
+
     public function render()
     {
         $this->getLocations();
@@ -64,10 +64,10 @@ class MyTest extends Component
             $this->validate([
                 'image' => 'image|max:2048'
             ]);
-        }        
+        }
     }
 
-    public function store(){  
+    public function store(){
         $this->validate([
             'long' => 'required',
             'lat' => 'required',
@@ -90,17 +90,17 @@ class MyTest extends Component
             'title' => $this->title,
             'description' => $this->description,
             'image' => $imageName,
-            'user_id' => Auth::id(),
+            // 'user_id' => Auth::id(),
         ]);
 
         session()->flash('info', 'Product Created Successfully');
 
         $this->clearForm();
-        $this->getLocations();    
-        $this->dispatchBrowserEvent('locationAdded', $this->geoJson);        
+        $this->getLocations();
+        $this->dispatchBrowserEvent('locationAdded', $this->geoJson);
     }
 
-    public function update(){  
+    public function update(){
         $this->validate([
             'long' => 'required',
             'lat' => 'required',
@@ -129,15 +129,15 @@ class MyTest extends Component
                 'title' => $this->title,
                 'description' => $this->description,
             ];
-        }   
+        }
 
         $location->update($updateData);
 
         session()->flash('info', 'Product Updated Successfully');
 
         $this->clearForm();
-        $this->getLocations();    
-        $this->dispatchBrowserEvent('updateLocation', $this->geoJson);        
+        $this->getLocations();
+        $this->dispatchBrowserEvent('updateLocation', $this->geoJson);
     }
 
     public function deleteLocationById(){
@@ -145,7 +145,7 @@ class MyTest extends Component
         $location->delete();
 
         $this->clearForm();
-        $this->dispatchBrowserEvent('deleteLocation', $location->id);           
+        $this->dispatchBrowserEvent('deleteLocation', $location->id);
     }
 
     public function clearForm(){
